@@ -1,3 +1,5 @@
+import config from "../config"
+
 export default class GithubAPI {
   constructor({ userToken }) {
     this.userToken = userToken;
@@ -7,7 +9,7 @@ export default class GithubAPI {
   }
 
   currentUser = () => {
-    return fetch("https://api.github.com/user", {
+    return fetch(`${config.API}/user`, {
       headers: {
         ...this.defaultHeaders
       }
@@ -21,7 +23,7 @@ export default class GithubAPI {
   };
 
   userRepositories = ({ login }) => {
-    return fetch(`https://api.github.com/users/${login}/repos`, {
+    return fetch(`${config.API}/users/${login}/repos`, {
       headers: {
         ...this.defaultHeaders
       }
@@ -34,8 +36,22 @@ export default class GithubAPI {
     });
   };
 
+  userIssues = ({login, repo}) => {
+    return fetch(`${config.API}/repos/${login}/${repo}/issues`, {
+      headers: {
+        ...this.defaultHeaders
+      }
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        return Promise.reject();
+      }
+    });
+  }
+
   postIssue = ({ login, repo, title, text }) => {
-    return fetch(`https://api.github.com/repos/${login}/${repo}/issues`, {
+    return fetch(`${config.API}/repos/${login}/${repo}/issues`, {
       method: "POST",
       headers: {
         ...this.defaultHeaders,

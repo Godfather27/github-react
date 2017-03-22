@@ -8,6 +8,10 @@
 
 .route {
   position: absolute;
-    padding: 10px 5px;
-    width: 100vw;
+  padding: 10px 5px;
+  width: 100vw;
+}
+
+ul {
+  list-style-type: none;
 }

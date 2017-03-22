@@ -1,15 +1,14 @@
 import React from "react";
-import { observer, Provider, inject } from "mobx-react";
+import { observer, inject } from "mobx-react";
+import Unauthenticated from "./unauthenticated"
 
-export default inject("sessionStore")(
+const About = inject("sessionStore")(
   observer(
     ({sessionStore}) => {
       const user = sessionStore.userDeferred.value;
-      if (!sessionStore.authenticated) return null
 
       return (
         <div>
-          {console.log(user)}
           <h1>About {user.login}</h1>
           <strong>Followers:</strong> {user.followers}<br/>
           <strong>Following:</strong> {user.following}
@@ -18,3 +17,7 @@ export default inject("sessionStore")(
     }
   )
 );
+
+export default ()=>{
+  return <Unauthenticated component={About}/>
+}

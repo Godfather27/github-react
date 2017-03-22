@@ -1,17 +1,14 @@
 import { extendObservable, action, when } from "mobx";
 import { fromPromise, REJECTED } from "mobx-utils";
 
-export default class Repo {
+export default class RepoStore {
   constructor({ githubAPI, sessionStore }) {
     extendObservable(this, {
       repoDeferred: null,
       fetchRepos: action("fetchRepos", () => {
         when(
           // condition
-          () =>
-            sessionStore.authenticated &&
-            (this.repoDeferred === null ||
-              this.repoDeferred.state === REJECTED),
+          () => sessionStore.authenticated && (this.repoDeferred === null || this.repoDeferred.state === REJECTED),
           // ... then
           () => {
             const userDeferred = sessionStore.userDeferred;
@@ -20,12 +17,6 @@ export default class Repo {
             );
           }
         );
-      }),
-      postIssue: action("postIssue", () => {
-        githubAPI.postIssue({
-          login: sessionStore.userDeferred.value.login,
-          repo: "issuetest"
-        });
       })
     });
   }
